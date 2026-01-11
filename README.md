@@ -48,6 +48,25 @@ Steam's API has strict rate limits. This project implements a sophisticated scra
 
 ---
 
+## 🏗 System Architecture
+
+The project is built on a **Microservice-like Architecture** orchestrated by Docker Compose.
+
+```mermaid
+graph TD
+    subgraph Docker Container
+        Bot[Telegram Bot Service]
+        Monitor[Background Daemon]
+        DB[(PostgreSQL Database)]
+    end
+
+    User((User)) -->|Commands| Bot
+    Bot -->|Read/Write| DB
+    Monitor -->|Fetch Prices| SteamAPI[Steam Market]
+    Monitor -->|Check Alerts| DB
+    Monitor -.->|Trigger Notification| Bot
+
+```
 
 ## 📂 Project Structure
 
