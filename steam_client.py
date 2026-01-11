@@ -25,11 +25,11 @@ class SteamClient:
             
             async with session.get(url, headers=self.headers) as response:
                 if response.status == 429:
-                    print(f"⚠️ Rate Limit (429) for: {item_name}")
+                    print(f"Rate Limit (429) for: {item_name}")
                     return item_name, None
                 
                 if response.status != 200:
-                    print(f"❌ Error {response.status} for: {item_name}")
+                    print(f"Error {response.status} for: {item_name}")
                     return item_name, None
                 
                 data = await response.json()
@@ -65,7 +65,7 @@ class SteamClient:
         start_assetid = None
         page = 1
         
-        print(f"📡 Starting inventory scan for {steam_id}...")
+        print(f"Starting inventory scan for {steam_id}...")
 
         while True:
             if start_assetid:
@@ -77,12 +77,12 @@ class SteamClient:
 
                 async with session.get(url, headers=headers, params=params) as response:
                     if response.status == 429:
-                        print("⏳ Rate limit hit! Waiting 5 seconds...")
+                        print("Rate limit hit! Waiting 5 seconds...")
                         await asyncio.sleep(5)
                         continue
                         
                     if response.status != 200:
-                        print(f"❌ Error on page {page}: {response.status}")
+                        print(f"Error on page {page}: {response.status}")
                         break 
                     
                     data = await response.json()
@@ -95,7 +95,7 @@ class SteamClient:
                     if not assets:
                         break
 
-                    print(f"   📄 Page {page}: found {len(assets)} items")
+                    print(f"Page {page}: found {len(assets)} items")
 
                     item_names = {}
                     for desc in descriptions:
@@ -113,7 +113,7 @@ class SteamClient:
                         page += 1
 
                         if page > 20: 
-                            print("⚠️ Bot page limit reached.")
+                            print("Bot page limit reached.")
                             break
                     else:
                         break
@@ -122,5 +122,5 @@ class SteamClient:
                 print(f"[Pagination Error] {e}")
                 break
         
-        print(f"✅ Scan complete. Unique slots: {len(full_inventory)}")
+        print(f"Scan complete. Unique slots: {len(full_inventory)}")
         return full_inventory
